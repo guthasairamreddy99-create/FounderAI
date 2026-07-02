@@ -1,38 +1,70 @@
+import {
+  FaMoneyBillWave,
+  FaWallet,
+  FaChartLine,
+  FaShieldAlt,
+} from "react-icons/fa";
+
+import StatCard from "../common/StatCard";
+
 type AnalyticsCardsProps = {
-  budget: string;
+  revenue: number;
+  expenses: number;
+  budget: number;
+  score: number;
 };
 
-function AnalyticsCards({ budget }: AnalyticsCardsProps) {
+function AnalyticsCards({
+  revenue,
+  expenses,
+  budget,
+  score,
+}: AnalyticsCardsProps) {
+  const profit = revenue - expenses;
+
+  const risk =
+    score >= 80
+      ? "Low"
+      : score >= 60
+      ? "Medium"
+      : "High";
+
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <p className="text-gray-400">AI Score</p>
-        <h1 className="text-4xl font-bold text-green-400 mt-2">
-          92%
-        </h1>
-      </div>
+      <StatCard
+        title="Revenue"
+        value={`₹${revenue.toLocaleString()}`}
+        color="text-green-400"
+        icon={<FaMoneyBillWave className="text-green-400" />}
+      />
 
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <p className="text-gray-400">Success Rate</p>
-        <h1 className="text-4xl font-bold text-blue-400 mt-2">
-          87%
-        </h1>
-      </div>
+      <StatCard
+        title="Profit"
+        value={`₹${profit.toLocaleString()}`}
+        color="text-cyan-400"
+        icon={<FaChartLine className="text-cyan-400" />}
+      />
 
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <p className="text-gray-400">Investment</p>
-        <h1 className="text-3xl font-bold text-yellow-400 mt-2">
-          {budget}
-        </h1>
-      </div>
+      <StatCard
+        title="Budget"
+        value={`₹${budget.toLocaleString()}`}
+        color="text-yellow-400"
+        icon={<FaWallet className="text-yellow-400" />}
+      />
 
-      <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-        <p className="text-gray-400">Risk</p>
-        <h1 className="text-4xl font-bold text-red-400 mt-2">
-          Low
-        </h1>
-      </div>
+      <StatCard
+        title="Risk Level"
+        value={risk}
+        color={
+          risk === "Low"
+            ? "text-green-400"
+            : risk === "Medium"
+            ? "text-yellow-400"
+            : "text-red-400"
+        }
+        icon={<FaShieldAlt className="text-red-400" />}
+      />
 
     </div>
   );

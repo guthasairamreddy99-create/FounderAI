@@ -1,11 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+console.log("Gemini Key:", process.env.GEMINI_API_KEY);
+
+import forecastRoutes from "./routes/forecastRoutes";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
-
+import analysisRoutes from "./routes/analysisRoutes";
 import connectDB from "./config/db";
 import businessRoutes from "./routes/businessRoutes";
-
-dotenv.config();
+import aiRoutes from "./routes/aiRoutes";
 
 const app = express();
 
@@ -15,6 +19,9 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/business", businessRoutes);
+app.use("/api/analysis", analysisRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/forecast", forecastRoutes);
 
 app.get("/", (req, res) => {
   res.json({

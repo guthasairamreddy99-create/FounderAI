@@ -21,21 +21,29 @@ function BusinessWizard({ onClose }: BusinessWizardProps) {
   const [budget, setBudget] = useState("");
   const [customer, setCustomer] = useState("");
 
-  const handleFinish = async () => {
-    try {
-      await createBusiness({
-        name: businessName,
-        location,
-        budget,
-        customer,
-        status: "Planning",
-      });
+ const handleFinish = async () => {
+  console.log("🚀 Finish clicked");
 
-      onClose();
-    } catch (error) {
-      console.error("Failed to create business:", error);
-    }
-  };
+  try {
+    console.log("📤 Sending business...");
+
+    const result = await createBusiness({
+      name: businessName,
+      location,
+      budget,
+      customer,
+      status: "Planning",
+    });
+
+    console.log("✅ API Success:", result);
+
+    alert("Business Created!");
+
+    onClose();
+  } catch (error) {
+    console.error("❌ API Error:", error);
+  }
+};
 
   return (
     <section className="py-24 px-8 bg-slate-950">
