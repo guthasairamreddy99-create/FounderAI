@@ -7,6 +7,8 @@ type BusinessCardProps = {
   location?: string;
   budget?: string;
   customer?: string;
+  onDelete: (id: string) => void;
+  onEdit: (id: string) => void;
 };
 
 function BusinessCard({
@@ -16,6 +18,8 @@ function BusinessCard({
   location,
   budget,
   customer,
+  onDelete,
+  onEdit,
 }: BusinessCardProps) {
   const navigate = useNavigate();
 
@@ -54,11 +58,21 @@ function BusinessCard({
           Open →
         </button>
 
-        <button className="bg-slate-800 hover:bg-slate-700 text-white px-5 rounded-xl">
+        <button
+          onClick={() => onEdit(id)}
+          className="bg-slate-800 hover:bg-slate-700 text-white px-5 rounded-xl"
+        >
           ✏️
         </button>
 
-        <button className="bg-red-600 hover:bg-red-700 text-white px-5 rounded-xl">
+        <button
+          onClick={() => {
+            if (window.confirm("Delete this business?")) {
+              onDelete(id);
+            }
+          }}
+          className="bg-red-600 hover:bg-red-700 text-white px-5 rounded-xl"
+        >
           🗑
         </button>
       </div>

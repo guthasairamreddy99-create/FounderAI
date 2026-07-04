@@ -27,6 +27,32 @@ export async function createBusiness(business: {
   return data.data;
 }
 
+export async function updateBusiness(
+  id: string,
+  business: {
+    name: string;
+    location: string;
+    budget: string;
+    customer: string;
+    status: string;
+  }
+) {
+  const response = await fetch(
+    `http://localhost:5000/api/business/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(business),
+    }
+  );
+
+  const data = await response.json();
+
+  return data.data;
+}
+
 export const askAI = async (message: string) => {
   const response = await fetch("http://localhost:5000/api/ai", {
     method: "POST",
@@ -85,3 +111,9 @@ export const getForecast = async (
 
   return response.json();
 };
+
+export async function deleteBusiness(id: string) {
+  await fetch(`http://localhost:5000/api/business/${id}`, {
+    method: "DELETE",
+  });
+}

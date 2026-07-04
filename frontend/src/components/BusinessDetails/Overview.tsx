@@ -1,8 +1,17 @@
-function Overview() {
+type Props = {
+  revenue: number;
+  expenses: number;
+  customers: number;
+};
+
+function Overview({ revenue, expenses, customers }: Props) {
+  const profit = revenue - expenses;
+
   return (
     <div className="bg-slate-900 rounded-2xl p-8">
-      <h2 className="text-3xl font-bold text-white mb-6">
-        Business Overview
+
+      <h2 className="text-3xl font-bold text-white mb-8">
+        📊 Business Overview
       </h2>
 
       <div className="grid md:grid-cols-4 gap-6">
@@ -13,7 +22,7 @@ function Overview() {
           </h3>
 
           <p className="text-3xl text-green-400 font-bold mt-3">
-            ₹0
+            ₹{revenue.toLocaleString()}
           </p>
         </div>
 
@@ -23,7 +32,7 @@ function Overview() {
           </h3>
 
           <p className="text-3xl text-red-400 font-bold mt-3">
-            ₹0
+            ₹{expenses.toLocaleString()}
           </p>
         </div>
 
@@ -33,7 +42,7 @@ function Overview() {
           </h3>
 
           <p className="text-3xl text-cyan-400 font-bold mt-3">
-            ₹0
+            ₹{profit.toLocaleString()}
           </p>
         </div>
 
@@ -43,11 +52,12 @@ function Overview() {
           </h3>
 
           <p className="text-3xl text-yellow-400 font-bold mt-3">
-            0
+            {customers}
           </p>
         </div>
 
       </div>
+
     </div>
   );
 }

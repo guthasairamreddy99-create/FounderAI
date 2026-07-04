@@ -1,13 +1,6 @@
-import {
-  FaMoneyBillWave,
-  FaWallet,
-  FaChartLine,
-  FaShieldAlt,
-} from "react-icons/fa";
-
 import StatCard from "../common/StatCard";
 
-type AnalyticsCardsProps = {
+type Props = {
   revenue: number;
   expenses: number;
   budget: number;
@@ -19,51 +12,36 @@ function AnalyticsCards({
   expenses,
   budget,
   score,
-}: AnalyticsCardsProps) {
-  const profit = revenue - expenses;
-
-  const risk =
-    score >= 80
-      ? "Low"
-      : score >= 60
-      ? "Medium"
-      : "High";
-
+}: Props) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-6">
+
+      <StatCard
+        title="Health Score"
+        value={`${score}%`}
+        color="text-green-400"
+        icon="💚"
+      />
 
       <StatCard
         title="Revenue"
         value={`₹${revenue.toLocaleString()}`}
-        color="text-green-400"
-        icon={<FaMoneyBillWave className="text-green-400" />}
+        color="text-cyan-400"
+        icon="📈"
       />
 
       <StatCard
-        title="Profit"
-        value={`₹${profit.toLocaleString()}`}
-        color="text-cyan-400"
-        icon={<FaChartLine className="text-cyan-400" />}
+        title="Expenses"
+        value={`₹${expenses.toLocaleString()}`}
+        color="text-red-400"
+        icon="💸"
       />
 
       <StatCard
         title="Budget"
         value={`₹${budget.toLocaleString()}`}
         color="text-yellow-400"
-        icon={<FaWallet className="text-yellow-400" />}
-      />
-
-      <StatCard
-        title="Risk Level"
-        value={risk}
-        color={
-          risk === "Low"
-            ? "text-green-400"
-            : risk === "Medium"
-            ? "text-yellow-400"
-            : "text-red-400"
-        }
-        icon={<FaShieldAlt className="text-red-400" />}
+        icon="💰"
       />
 
     </div>

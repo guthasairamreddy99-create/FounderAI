@@ -21,36 +21,35 @@ function BusinessWizard({ onClose }: BusinessWizardProps) {
   const [budget, setBudget] = useState("");
   const [customer, setCustomer] = useState("");
 
- const handleFinish = async () => {
-  console.log("🚀 Finish clicked");
+  const handleFinish = async () => {
+    try {
+      const result = await createBusiness({
+        name: businessName,
+        location,
+        budget,
+        customer,
+        status: "Planning",
+      });
 
-  try {
-    console.log("📤 Sending business...");
+      console.log("✅ Business Created:", result);
 
-    const result = await createBusiness({
-      name: businessName,
-      location,
-      budget,
-      customer,
-      status: "Planning",
-    });
+      alert("Business Created Successfully!");
 
-    console.log("✅ API Success:", result);
-
-    alert("Business Created!");
-
-    onClose();
-  } catch (error) {
-    console.error("❌ API Error:", error);
-  }
-};
+      onClose();
+    } catch (error) {
+      console.error("❌ Failed to create business:", error);
+      alert("Failed to create business.");
+    }
+  };
 
   return (
     <section className="py-24 px-8 bg-slate-950">
       <div className="max-w-4xl mx-auto bg-slate-900 rounded-3xl border border-slate-800 p-10">
+
         <ProgressBar step={step} />
 
         <div className="mt-12">
+
           {step === 1 && (
             <StepBusiness
               businessName={businessName}
@@ -87,6 +86,7 @@ function BusinessWizard({ onClose }: BusinessWizardProps) {
               customer={customer}
             />
           )}
+
         </div>
 
         <NavigationButtons
@@ -94,6 +94,7 @@ function BusinessWizard({ onClose }: BusinessWizardProps) {
           setStep={setStep}
           onFinish={handleFinish}
         />
+
       </div>
     </section>
   );

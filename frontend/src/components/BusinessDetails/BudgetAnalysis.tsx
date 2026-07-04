@@ -1,269 +1,114 @@
 import { useState } from "react";
-import { analyzeBudget, getForecast } from "../../api/businessApi";
-import RevenueChart from "./RevenueChart";
-import ForecastChart from "./ForecastChart";
-import AnalyticsCards from "./AnalyticsCards";
-import { motion } from "framer-motion";
-import AIAlerts from "./AIAlerts";
-import BusinessInsights from "./BusinessInsights";
-import { generateReport } from "../../reports/generateReport";
-import ExportReport from "./ExportReport";
 
-function BudgetAnalysis() {
-  const [revenue, setRevenue] = useState("");
-  const [expenses, setExpenses] = useState("");
-  const [budget, setBudget] = useState("");
+import ExecutiveDashboard from "../Dashboard/ExecutiveDashboard";
+import BudgetAnalysis from "./BudgetAnalysis";
+import Customers from "./Customers";
+import Marketing from "./Marketing";
+import AIMentor from "./AIMentor";
+import Reports from "./Reports";
+import Settings from "./Settings";
 
-  const [analysis, setAnalysis] = useState<any>(null);
-  const [forecast, setForecast] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
+function BusinessDetailsPage() {
+  const [tab, setTab] = useState("dashboard");
 
-  const handleAnalyze = async () => {
-    if (!revenue || !expenses || !budget) {
-      alert("Please fill all fields.");
-      return;
-    }
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-slate-900 p-6 border-r border-slate-800">
 
-    try {
-      setLoading(true);
+        <h1 className="text-3xl font-bold mb-10">
+          🚀 FounderAI
+        </h1>
 
-      const result = await analyzeBudget(
-        Number(revenue),
-        Number(expenses),
-        Number(budget)
-      );
+        <div className="space-y-3">
 
-      setAnalysis(result);
-      const forecastResult = await getForecast(Number(revenue), Number(expenses));
-      setForecast(forecastResult.forecast.forecast);
-    } catch (error) {
-      console.error(error);
-      alert("Analysis failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("dashboard")}
+          >
+            📊 Dashboard
+          </button>
 
-   return (
-  <motion.div
-    className="space-y-8"
-    initial={{ opacity: 0, y: 30 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
-  >
-    <h1 className="text-4xl font-bold text-white">
-      💰 AI Financial Analyzer
-    </h1>
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("finance")}
+          >
+            💰 Financial Center
+          </button>
 
-    <div className="grid md:grid-cols-3 gap-6">
-      <input
-        type="number"
-        placeholder="Monthly Revenue"
-        value={revenue}
-        onChange={(e) => setRevenue(e.target.value)}
-        className="bg-slate-800 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none rounded-xl p-4 text-white transition"
-      />
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("customers")}
+          >
+            👥 Customers
+          </button>
 
-      <input
-        type="number"
-        placeholder="Monthly Expenses"
-        value={expenses}
-        onChange={(e) => setExpenses(e.target.value)}
-        className="bg-slate-800 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none rounded-xl p-4 text-white transition"
-      />
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("marketing")}
+          >
+            📢 Marketing AI
+          </button>
 
-      <input
-        type="number"
-        placeholder="Available Budget"
-        value={budget}
-        onChange={(e) => setBudget(e.target.value)}
-        className="bg-slate-800 border border-slate-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none rounded-xl p-4 text-white transition"
-      />
-    </div>
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("ai")}
+          >
+            🤖 AI Mentor
+          </button>
 
-    <button
-      onClick={handleAnalyze}
-      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition duration-300 px-8 py-4 rounded-xl text-white font-semibold shadow-lg"
-    >
-      {loading ? "Analyzing..." : "Analyze Business"}
-    </button>
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("reports")}
+          >
+            📄 Reports
+          </button>
 
-    {loading && (
-      <div className="text-cyan-400 text-lg">
-        🤖 FounderAI is analyzing your business...
+          <button
+            className="block w-full text-left py-3 px-3 rounded-lg hover:bg-indigo-600 transition"
+            onClick={() => setTab("settings")}
+          >
+            ⚙ Settings
+          </button>
+
+        </div>
+
       </div>
-    )}
 
-    {analysis && (
-      <div className="space-y-6">
-        <AnalyticsCards
-          revenue={Number(revenue)}
-          expenses={Number(expenses)}
-          budget={Number(budget)}
-          score={analysis.score}
-        />
+      {/* Main Content */}
+      <div className="flex-1 p-10 overflow-y-auto">
 
-        <div className="bg-slate-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            💚 Business Health Score
-          </h2>
-
-          <div className="w-full bg-slate-700 rounded-full h-5">
-            <div
-              className={`h-5 rounded-full transition-all duration-700 ${
-                analysis.score >= 80
-                  ? "bg-green-500"
-                  : analysis.score >= 60
-                  ? "bg-yellow-500"
-                  : "bg-red-500"
-              }`}
-              style={{ width: `${analysis.score}%` }}
-            />
-          </div>
-
-          <p className="text-5xl font-bold mt-5 text-white">
-            {analysis.score}/100
-          </p>
-        </div>
-
-        <div className="bg-indigo-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold mb-6 text-white">
-            📊 Business Summary
-          </h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <div>
-              <p className="text-gray-300">Revenue</p>
-              <p className="text-3xl font-bold text-green-400">
-                ₹{Number(revenue).toLocaleString()}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-300">Expenses</p>
-              <p className="text-3xl font-bold text-red-400">
-                ₹{Number(expenses).toLocaleString()}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-gray-300">Budget</p>
-              <p className="text-3xl font-bold text-cyan-400">
-                ₹{Number(budget).toLocaleString()}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-emerald-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold mb-4">
-            💵 Estimated Monthly Profit
-          </h2>
-
-          <p className="text-5xl font-bold text-green-300">
-            ₹{(Number(revenue) - Number(expenses)).toLocaleString()}
-          </p>
-
-          <p className="text-gray-300 mt-3">
-            Profit = Revenue − Expenses
-          </p>
-        </div>
-
-        <ExportReport
-  revenue={Number(revenue)}
-  expenses={Number(expenses)}
-  budget={Number(budget)}
-  analysis={analysis}
-/>
-
-        <AIAlerts
-  revenue={Number(revenue)}
-  expenses={Number(expenses)}
-  budget={Number(budget)}
-/>
-
-<BusinessInsights
-  revenue={Number(revenue)}
-  expenses={Number(expenses)}
-/>
-
-        <RevenueChart
-          revenue={Number(revenue)}
-          expenses={Number(expenses)}
-        />
-
-        {forecast.length > 0 && (
-          <ForecastChart forecast={forecast} />
+        {tab === "dashboard" && (
+          <ExecutiveDashboard score={92} />
         )}
 
-        <div className="bg-slate-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-green-400 mb-4">
-            ✅ Strengths
-          </h2>
+        {tab === "finance" && (
+          <BudgetAnalysis />
+        )}
 
-          <ul className="list-disc ml-6 space-y-3">
-            {analysis.strengths.map((item: string, index: number) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {tab === "customers" && (
+          <Customers />
+        )}
 
-        <div className="bg-slate-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-yellow-400 mb-4">
-            ⚠ Weaknesses
-          </h2>
+        {tab === "marketing" && (
+          <Marketing />
+        )}
 
-          <ul className="list-disc ml-6 space-y-3">
-            {analysis.weaknesses.map((item: string, index: number) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {tab === "ai" && (
+          <AIMentor />
+        )}
 
-        <div className="bg-slate-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-red-400 mb-4">
-            🚨 Risks
-          </h2>
+        {tab === "reports" && (
+          <Reports />
+        )}
 
-          <ul className="list-disc ml-6 space-y-3">
-            {analysis.risks.map((item: string, index: number) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
+        {tab === "settings" && (
+          <Settings />
+        )}
 
-        <div className="bg-blue-900 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-white mb-4">
-            💡 AI Recommendations
-          </h2>
-
-          <div className="flex justify-end">
-  <button
-    onClick={() =>
-      generateReport(
-        Number(revenue),
-        Number(expenses),
-        Number(budget),
-        analysis.score,
-        analysis
-      )
-    }
-    className="bg-green-600 hover:bg-green-700 transition px-8 py-4 rounded-xl text-white font-semibold shadow-lg"
-  >
-    📄 Download AI Report
-  </button>
-</div>
-
-          <ul className="list-disc ml-6 space-y-3">
-            {analysis.recommendations.map((item: string, index: number) => (
-              <li key={index}>{item}</li>
-            ))}
-          </ul>
-        </div>
       </div>
-    )}
-  </motion.div>
-);
+    </div>
+  );
 }
 
-export default BudgetAnalysis;
+export default BusinessDetailsPage;

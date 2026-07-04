@@ -6,9 +6,31 @@ const businessSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     location: String,
-    budget: String,
-    customer: String,
+
+    budget: Number,
+
+    revenue: {
+      type: Number,
+      default: 0,
+    },
+
+    expenses: {
+      type: Number,
+      default: 0,
+    },
+
+    customers: {
+      type: Number,
+      default: 0,
+    },
+
+    growth: {
+      type: Number,
+      default: 0,
+    },
+
     status: {
       type: String,
       default: "Planning",

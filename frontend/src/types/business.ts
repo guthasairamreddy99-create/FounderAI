@@ -1,5 +1,5 @@
 export type Business = {
-  id: number;
+  _id: string;
   name: string;
   location: string;
   budget: string;
