@@ -1,11 +1,6 @@
-import {
-  FaMoneyBillWave,
-  FaChartLine,
-  FaUsers,
-  FaPercentage,
-} from "react-icons/fa";
-
 type Props = {
+  businesses: number;
+  budget: number;
   revenue: number;
   profit: number;
   customers: number;
@@ -13,6 +8,8 @@ type Props = {
 };
 
 function KPICards({
+  businesses,
+  budget,
   revenue,
   profit,
   customers,
@@ -20,53 +17,69 @@ function KPICards({
 }: Props) {
   const cards = [
     {
+      title: "Businesses",
+      value: businesses,
+      color: "text-cyan-400",
+      emoji: "🏢",
+    },
+    {
+      title: "Budget",
+      value: `₹${budget.toLocaleString()}`,
+      color: "text-green-400",
+      emoji: "💰",
+    },
+    {
       title: "Revenue",
       value: `₹${revenue.toLocaleString()}`,
-      icon: <FaMoneyBillWave />,
-      color: "bg-green-600",
+      color: "text-blue-400",
+      emoji: "📈",
     },
     {
       title: "Profit",
       value: `₹${profit.toLocaleString()}`,
-      icon: <FaChartLine />,
-      color: "bg-blue-600",
+      color: "text-emerald-400",
+      emoji: "💵",
     },
     {
       title: "Customers",
       value: customers,
-      icon: <FaUsers />,
-      color: "bg-purple-600",
+      color: "text-yellow-400",
+      emoji: "👥",
     },
     {
       title: "Growth",
       value: `${growth}%`,
-      icon: <FaPercentage />,
-      color: "bg-orange-600",
+      color: "text-purple-400",
+      emoji: "🚀",
+    },
+    {
+      title: "AI Score",
+      value: "94%",
+      color: "text-pink-400",
+      emoji: "🤖",
+    },
+    {
+      title: "Reports",
+      value: "Ready",
+      color: "text-orange-400",
+      emoji: "📄",
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
       {cards.map((card) => (
         <div
           key={card.title}
-          className="bg-slate-900 rounded-2xl p-6 border border-slate-800 hover:border-indigo-500 transition"
+          className="bg-slate-900 rounded-2xl p-6"
         >
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="text-gray-400">{card.title}</p>
+          <p className="text-gray-400">
+            {card.emoji} {card.title}
+          </p>
 
-              <h2 className="text-3xl font-bold text-white mt-2">
-                {card.value}
-              </h2>
-            </div>
-
-            <div
-              className={`${card.color} w-14 h-14 rounded-xl flex items-center justify-center text-white text-2xl`}
-            >
-              {card.icon}
-            </div>
-          </div>
+          <h2 className={`text-3xl font-bold mt-3 ${card.color}`}>
+            {card.value}
+          </h2>
         </div>
       ))}
     </div>

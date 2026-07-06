@@ -1,155 +1,105 @@
-import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-import Overview from "./Overview";
-import BudgetAnalysis from "./BudgetAnalysis";
-import RevenuePrediction from "./RevenuePrediction";
-import Customers from "./Customers";
-import Marketing from "./Marketing";
-import AIMentor from "./AIMentor";
-import Reports from "./Reports";
-import Settings from "./Settings";
-import BusinessInsights from "./BusinessInsights";
+import type { Business } from "../../types/business";
+
 import AppLayout from "../Layout/AppLayout";
 
-function BusinessDetailsPage() {
-  const [tab, setTab] = useState("overview");
+import BusinessOverview from "./BusinessOverview";
+import ProfitCard from "./ProfitCard";
+import CustomerGrowth from "./CustomerGrowth";
 
-  // Temporary values
-  const revenue = 100000;
-  const expenses = 60000;
-  const customers = 284;
+import RevenueChart from "../Charts/RevenueChart";
+import ExpenseChart from "../Charts/ExpenseChart";
+
+import { getBusinesses } from "../../api/businessApi";
+import AIAdvisor from "./AIAdvisor";
+
+function BusinessDetailsPage() {
+  const { id } = useParams();
+
+  const [business, setBusiness] =
+    useState<Business | null>(null);
+
+  useEffect(() => {
+    async function loadBusiness() {
+      const businesses = await getBusinesses();
+
+      const found = businesses.find(
+        (b: Business) => b._id === id
+      );
+
+      if (found) {
+        setBusiness(found);
+      }
+    }
+
+    loadBusiness();
+  }, [id]);
+
+  if (!business) {
+    return (
+      <AppLayout>
+        <div className="text-center mt-20 text-white text-2xl">
+          Loading...
+        </div>
+      </AppLayout>
+    );
+  }
 
   return (
     <AppLayout>
 
-      {/* Navigation */}
-      <div className="flex flex-wrap gap-3 mb-8">
+      <h1 className="text-4xl font-bold text-white mb-8">
+        📊 {business.name}
+      </h1>
 
-        <button
-          onClick={() => setTab("overview")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "overview"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          📊 Overview
-        </button>
+      <BusinessOverview business={business} />
 
-        <button
-          onClick={() => setTab("insights")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "insights"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          📈 Insights
-        </button>
+      <div className="grid lg:grid-cols-2 gap-8 mt-8">
 
-        <button
-          onClick={() => setTab("budget")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "budget"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          💰 Budget
-        </button>
+        <ProfitCard
+          revenue={business.revenue}
+          budget={business.budget}
+        />
 
-        <button
-          onClick={() => setTab("revenue")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "revenue"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          📉 Forecast
-        </button>
-
-        <button
-          onClick={() => setTab("customers")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "customers"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          👥 Customers
-        </button>
-
-        <button
-          onClick={() => setTab("marketing")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "marketing"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          📢 Marketing
-        </button>
-
-        <button
-          onClick={() => setTab("ai")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "ai"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          🤖 AI Mentor
-        </button>
-
-        <button
-          onClick={() => setTab("reports")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "reports"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          📄 Reports
-        </button>
-
-        <button
-          onClick={() => setTab("settings")}
-          className={`px-5 py-3 rounded-xl ${
-            tab === "settings"
-              ? "bg-indigo-600"
-              : "bg-slate-800 hover:bg-slate-700"
-          }`}
-        >
-          ⚙️ Settings
-        </button>
+        <CustomerGrowth
+          customers={business.customers}
+          growth={business.growth}
+        />
 
       </div>
 
-      {/* Page Content */}
+      <div className="grid lg:grid-cols-2 gap-8 mt-8">
 
-      {tab === "overview" && <Overview revenue={revenue} expenses={expenses} customers={customers} />}
-
-      {tab === "insights" && (
-        <BusinessInsights
-          revenue={revenue}
-          expenses={expenses}
+        <RevenueChart
+          revenue={[
+            business.revenue * 0.40,
+            business.revenue * 0.55,
+            business.revenue * 0.72,
+            business.revenue,
+          ]}
         />
-      )}
 
-      {tab === "budget" && <BudgetAnalysis />}
+        <ExpenseChart
+          expenses={[
+            business.budget * 0.40,
+            business.budget * 0.60,
+            business.budget * 0.85,
+            business.budget,
+          ]}
+        />
 
-      {tab === "revenue" && <RevenuePrediction />}
+      </div>
 
-      {tab === "customers" && <Customers />}
-
-      {tab === "marketing" && <Marketing />}
-
-      {tab === "ai" && <AIMentor />}
-
-      {tab === "reports" && <Reports />}
-
-      {tab === "settings" && <Settings />}
+      <div className="mt-8">
+  <AIAdvisor
+    revenue={business.revenue}
+    budget={business.budget}
+    customers={business.customers}
+    growth={business.growth}
+  />
+</div>
 
     </AppLayout>
   );

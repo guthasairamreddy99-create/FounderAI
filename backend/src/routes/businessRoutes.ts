@@ -1,5 +1,5 @@
 import express from "express";
-
+import { protect } from "../middleware/authMiddleware";
 import {
   getBusinesses,
   createBusiness,
@@ -9,12 +9,12 @@ import {
 
 const router = express.Router();
 
-router.get("/", getBusinesses);
+router.get("/", protect, getBusinesses);
 
-router.post("/", createBusiness);
+router.post("/", protect, createBusiness);
 
-router.delete("/:id", deleteBusiness);
+router.delete("/:id", protect, deleteBusiness);
 
-router.put("/:id", updateBusiness);
+router.put("/:id", protect, updateBusiness);
 
 export default router;

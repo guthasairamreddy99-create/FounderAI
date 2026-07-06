@@ -1,13 +1,16 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import Business from "../models/Business";
+import { AuthRequest } from "../middleware/authMiddleware";
 
-// GET all businesses
+// GET all businesses of logged-in user
 export const getBusinesses = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
-    const businesses = await Business.find();
+    const businesses = await Business.find({
+      user: req.user.id,
+    });
 
     res.json({
       success: true,
@@ -21,13 +24,16 @@ export const getBusinesses = async (
   }
 };
 
-// CREATE a business
+// CREATE business for logged-in user
 export const createBusiness = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
-    const business = await Business.create(req.body);
+    const business = await Business.create({
+      ...req.body,
+      user: req.user.id,
+    });
 
     res.status(201).json({
       success: true,
@@ -41,44 +47,19 @@ export const createBusiness = async (
   }
 };
 
-export const deleteBusiness = async (
-  req: Request,
-  res: Response
-) => {
-  try {
-    const { id } = req.params;
-
-    const business = await Business.findByIdAndDelete(id);
-
-    if (!business) {
-      return res.status(404).json({
-        success: false,
-        message: "Business not found",
-      });
-    }
-
-    res.json({
-      success: true,
-      message: "Business deleted successfully",
-    });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to delete business",
-    });
-  }
-};
-
-// UPDATE a business
+// UPDATE only own business
 export const updateBusiness = async (
-  req: Request,
+  req: AuthRequest,
   res: Response
 ) => {
   try {
     const { id } = req.params;
 
-    const business = await Business.findByIdAndUpdate(
-      id,
+    const business = await Business.findOneAndUpdate(
+      {
+        _id: id,
+        user: req.user.id,
+      },
       req.body,
       {
         new: true,
@@ -101,6 +82,38 @@ export const updateBusiness = async (
     res.status(500).json({
       success: false,
       message: "Failed to update business",
+    });
+  }
+};
+
+// DELETE only own business
+export const deleteBusiness = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+    const { id } = req.params;
+
+    const business = await Business.findOneAndDelete({
+      _id: id,
+      user: req.user.id,
+    });
+
+    if (!business) {
+      return res.status(404).json({
+        success: false,
+        message: "Business not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Business deleted successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to delete business",
     });
   }
 };

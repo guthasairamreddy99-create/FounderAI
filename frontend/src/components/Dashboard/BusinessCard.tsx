@@ -5,7 +5,7 @@ type BusinessCardProps = {
   title: string;
   status: string;
   location?: string;
-  budget?: string;
+  budget?: number;
   customer?: string;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
@@ -42,7 +42,10 @@ function BusinessCard({
         </p>
 
         <p className="text-gray-300">
-          💰 <span className="text-white">{budget}</span>
+          💰{" "}
+          <span className="text-white">
+            ₹{budget?.toLocaleString() ?? 0}
+          </span>
         </p>
 
         <p className="text-gray-300">

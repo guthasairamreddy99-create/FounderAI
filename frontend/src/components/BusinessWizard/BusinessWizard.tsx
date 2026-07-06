@@ -1,5 +1,9 @@
 import { useState } from "react";
-import { createBusiness } from "../../api/businessApi";
+import {
+  createBusiness,
+  updateBusiness,
+} from "../../api/businessApi";
+import type { Business } from "../../types/business";
 
 import StepBusiness from "./StepBusiness";
 import StepLocation from "./StepLocation";
@@ -8,37 +12,60 @@ import StepCustomer from "./StepCustomer";
 import StepSummary from "./StepSummary";
 import ProgressBar from "./ProgressBar";
 import NavigationButtons from "./NavigationButtons";
+import { toast } from "react-toastify";
 
 type BusinessWizardProps = {
   onClose: () => void;
+  business?: Business | null;
 };
 
-function BusinessWizard({ onClose }: BusinessWizardProps) {
+function BusinessWizard({
+  onClose,
+  business,
+}: BusinessWizardProps) {
   const [step, setStep] = useState(1);
 
-  const [businessName, setBusinessName] = useState("");
-  const [location, setLocation] = useState("");
-  const [budget, setBudget] = useState("");
-  const [customer, setCustomer] = useState("");
+  const [businessName, setBusinessName] = useState(
+    business?.name || ""
+  );
+
+  const [location, setLocation] = useState(
+    business?.location || ""
+  );
+
+  const [budget, setBudget] = useState(
+    business?.budget?.toString() || ""
+  );
+
+  const [customer, setCustomer] = useState(
+    business?.customer || ""
+  );
 
   const handleFinish = async () => {
     try {
-      const result = await createBusiness({
+      const businessData = {
         name: businessName,
         location,
-        budget,
+        budget: Number(budget),
         customer,
         status: "Planning",
-      });
+      };
 
-      console.log("✅ Business Created:", result);
+      if (business?._id) {
+        await updateBusiness(business._id, businessData);
 
-      alert("Business Created Successfully!");
+        
+        toast.success("Business Updated Successfully!");
+      } else {
+        await createBusiness(businessData);
+
+        toast.success("Business Created Successfully!");
+      }
 
       onClose();
     } catch (error) {
-      console.error("❌ Failed to create business:", error);
-      alert("Failed to create business.");
+      console.error(error);
+      toast.error("Something went wrong.");
     }
   };
 

@@ -1,8 +1,14 @@
 import express from "express";
-import { askAI } from "../controllers/aiController";
+
+import {
+  getBusinessAdvice,
+} from "../controllers/aiController";
 
 const router = express.Router();
 
-router.post("/", askAI);
+router.post(
+  "/business-advice",
+  getBusinessAdvice
+);
 
 export default router;

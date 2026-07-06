@@ -19,6 +19,8 @@ function ExecutiveDashboard({ score }: Props) {
       </h1>
 
       <KPICards
+        businesses={12}
+        budget={800000}
         revenue={125000}
         profit={45000}
         customers={284}

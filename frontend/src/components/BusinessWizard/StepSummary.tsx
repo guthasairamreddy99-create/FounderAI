@@ -9,7 +9,7 @@ function StepSummary({
   businessName,
   location,
   budget,
-  customer,
+  customer
 }: StepSummaryProps) {
   return (
     <div>
@@ -18,7 +18,7 @@ function StepSummary({
       </h1>
 
       <p className="text-gray-400 mt-3">
-        Please verify your details before creating the business.
+        Please verify your details before creating or updating your business.
       </p>
 
       <div className="mt-8 bg-slate-800 rounded-2xl p-6 space-y-5 border border-slate-700">
@@ -40,7 +40,7 @@ function StepSummary({
         <div>
           <p className="text-gray-400 text-sm">Budget</p>
           <p className="text-white text-xl font-semibold">
-            {budget}
+            ₹{budget}
           </p>
         </div>
 
@@ -54,7 +54,7 @@ function StepSummary({
       </div>
 
       <p className="text-green-400 mt-8">
-        Click <strong>Finish</strong> to create your business.
+        Click <strong>Finish</strong> to save your business.
       </p>
     </div>
   );

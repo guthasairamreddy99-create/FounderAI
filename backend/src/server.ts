@@ -10,6 +10,8 @@ import analysisRoutes from "./routes/analysisRoutes";
 import connectDB from "./config/db";
 import businessRoutes from "./routes/businessRoutes";
 import aiRoutes from "./routes/aiRoutes";
+import healthRoutes from "./routes/healthRoutes";
+import authRoutes from "./routes/authRoutes";
 
 const app = express();
 
@@ -22,6 +24,8 @@ app.use("/api/business", businessRoutes);
 app.use("/api/analysis", analysisRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/forecast", forecastRoutes);
+app.use("/api/health", healthRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
   res.json({

@@ -2,14 +2,26 @@ import mongoose from "mongoose";
 
 const businessSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+
     name: {
       type: String,
       required: true,
     },
 
-    location: String,
+    location: {
+      type: String,
+      default: "",
+    },
 
-    budget: Number,
+    budget: {
+      type: Number,
+      default: 0,
+    },
 
     revenue: {
       type: Number,
