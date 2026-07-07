@@ -5,8 +5,10 @@ import {
   FaUsers,
   FaBullhorn,
   FaRobot,
+  FaFileAlt,
   FaFilePdf,
   FaCog,
+  FaFolderOpen,
 } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
@@ -43,6 +45,11 @@ const menu = [
     path: "/mentor",
   },
   {
+    icon: <FaFileAlt />,
+    label: "Business Plan",
+    path: "/business-plan",
+  },
+  {
     icon: <FaFilePdf />,
     label: "Reports",
     path: "/reports",
@@ -52,12 +59,16 @@ const menu = [
     label: "Settings",
     path: "/settings",
   },
+  {
+  icon: <FaFolderOpen />,
+  label: "My Plans",
+  path: "/my-plans",
+},
 ];
 
 function Sidebar() {
   return (
     <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 flex flex-col">
-
       <div className="p-6">
         <h1 className="text-3xl font-bold text-white">
           🚀 FounderAI
@@ -65,9 +76,7 @@ function Sidebar() {
       </div>
 
       <div className="flex-1 px-4 space-y-2">
-
         {menu.map((item) => (
-
           <NavLink
             key={item.label}
             to={item.path}
@@ -79,22 +88,14 @@ function Sidebar() {
               }`
             }
           >
-            <span className="text-lg">
-              {item.icon}
-            </span>
+            <span className="text-lg">{item.icon}</span>
 
-            <span className="font-medium">
-              {item.label}
-            </span>
-
+            <span className="font-medium">{item.label}</span>
           </NavLink>
-
         ))}
-
       </div>
 
       <div className="border-t border-slate-800 p-6">
-
         <p className="text-gray-400 text-sm">
           Welcome back 👋
         </p>
@@ -106,9 +107,7 @@ function Sidebar() {
         <button className="mt-5 w-full bg-red-600 hover:bg-red-700 rounded-xl py-3 text-white font-semibold">
           Logout
         </button>
-
       </div>
-
     </aside>
   );
 }

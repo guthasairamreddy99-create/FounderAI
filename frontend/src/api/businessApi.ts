@@ -182,3 +182,54 @@ export async function getForecast(
 
   return response.json();
 }
+
+// ============================
+// BUSINESS PLANS
+// ============================
+
+export async function getBusinessPlans() {
+  const response = await fetch(
+    "http://localhost:5000/api/business-plan"
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch business plans");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+}
+
+export async function deleteBusinessPlan(id: string) {
+  const response = await fetch(
+    `http://localhost:5000/api/business-plan/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to delete business plan");
+  }
+
+  return response.json();
+}
+
+// ============================
+// DASHBOARD
+// ============================
+
+export async function getDashboardStats() {
+  const response = await fetch(
+    "http://localhost:5000/api/dashboard"
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to load dashboard");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+}

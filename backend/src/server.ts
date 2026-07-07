@@ -12,6 +12,9 @@ import businessRoutes from "./routes/businessRoutes";
 import aiRoutes from "./routes/aiRoutes";
 import healthRoutes from "./routes/healthRoutes";
 import authRoutes from "./routes/authRoutes";
+import businessPlanRoutes from "./routes/businessPlanRoutes";
+import dashboardRoutes from "./routes/dashboardRoutes";
+import pitchDeckRoutes from "./routes/pitchDeckRoutes";
 
 const app = express();
 
@@ -26,7 +29,9 @@ app.use("/api/ai", aiRoutes);
 app.use("/api/forecast", forecastRoutes);
 app.use("/api/health", healthRoutes);
 app.use("/api/auth", authRoutes);
-
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/business-plan", businessPlanRoutes);
+app.use("/api/pitch-deck", pitchDeckRoutes);
 app.get("/", (req, res) => {
   res.json({
     success: true,

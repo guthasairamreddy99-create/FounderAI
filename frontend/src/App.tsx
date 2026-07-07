@@ -14,6 +14,9 @@ import SettingsPage from "./components/Pages/SettingsPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProtectedRoute from "./components/Auth/ProtectedRoute";
+import BusinessPlanPage from "./pages/BusinessPlanPage";
+import MyBusinessPlansPage from "./pages/MyBusinessPlansPage";
+import ViewBusinessPlanPage from "./pages/ViewBusinessPlanPage";
 
 function App() {
   return (
@@ -40,7 +43,20 @@ function App() {
       <Route path="/mentor" element={<ProtectedRoute><AIMentorPage /></ProtectedRoute>} />
       <Route path="/reports" element={<ProtectedRoute><ReportsPage /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
+<Route
+  path="/business-plan"
+  element={<BusinessPlanPage />}
+/>
 
+<Route
+  path="/my-plans"
+  element={<MyBusinessPlansPage />}
+/>
+
+<Route
+  path="/my-plans/:id"
+  element={<ViewBusinessPlanPage />}
+/>
       {/* Unknown Routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
 

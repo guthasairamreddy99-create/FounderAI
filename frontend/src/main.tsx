@@ -12,7 +12,7 @@ createRoot(document.getElementById("root")!).render(
     <App />
     <ToastContainer
         position="top-right"
-        autoClose={2500}
+        autoClose={3000}
         theme="dark"
     />
 </BrowserRouter>

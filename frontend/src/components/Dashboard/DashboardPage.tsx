@@ -12,6 +12,7 @@ import KPICards from "./KPICards";
 import {
   getBusinesses,
   deleteBusiness,
+  getDashboardStats,
 } from "../../api/businessApi";
 import BusinessStatusChart from "../Charts/BusinessStatusChart";
 import RevenueVsExpenseChart from "../Charts/RevenueVsExpenseChart";
@@ -31,6 +32,16 @@ function DashboardPage() {
     useState<Business | null>(null);
   const [search, setSearch] = useState("");
   const [notifications, setNotifications] = useState<string[]>([]);
+  const [dashboardStats, setDashboardStats] = useState({
+  totalBusinesses: 0,
+  totalBusinessPlans: 0,
+  totalBudget: 0,
+  totalRevenue: 0,
+  totalExpenses: 0,
+  totalProfit: 0,
+  averageBudget: 0,
+  latestBusiness: "",
+});
   const loadBusinesses = async () => {
     try {
       setLoading(true);
@@ -47,6 +58,7 @@ function DashboardPage() {
 
   useEffect(() => {
     loadBusinesses();
+    loadDashboard();
   }, []);
 
   const handleDelete = async (id: string) => {
@@ -58,11 +70,21 @@ function DashboardPage() {
   ...prev,
 ]);
       loadBusinesses();
+      loadDashboard();
     } catch (error) {
       console.error(error);
       toast.error("Delete Failed");
     }
   };
+
+  const loadDashboard = async () => {
+  try {
+    const data = await getDashboardStats();
+    setDashboardStats(data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   const handleEdit = (id: string) => {
     const business = businesses.find(
@@ -193,13 +215,13 @@ const completed = businesses.filter(
 </button> 
 
   <KPICards
-    businesses={businesses.length}
-    budget={stats.totalBudget}
-    revenue={stats.totalRevenue}
-    profit={stats.totalProfit}
-    customers={stats.totalCustomers}
-    growth={stats.avgGrowth}
-  />
+  businesses={dashboardStats.totalBusinesses}
+  budget={dashboardStats.totalBudget}
+  revenue={dashboardStats.totalRevenue}
+  profit={dashboardStats.totalProfit}
+  customers={stats.totalCustomers}
+  growth={stats.avgGrowth}
+/>
 
   {/* Charts go here */}
 
@@ -256,23 +278,36 @@ const completed = businesses.filter(
 
   <BusinessTable businesses={filteredBusinesses} />
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
 
-        <div className="bg-slate-900 rounded-2xl p-6">
-          <p className="text-gray-400">Growth</p>
-          <h2 className="text-4xl font-bold text-purple-400 mt-3">
-            {stats.avgGrowth}%
-          </h2>
-        </div>
+  <div className="bg-slate-900 rounded-2xl p-6">
+    <p className="text-gray-400">Business Plans</p>
+    <h2 className="text-4xl font-bold text-indigo-400 mt-3">
+      {dashboardStats.totalBusinessPlans}
+    </h2>
+  </div>
 
-      </div>
+  <div className="bg-slate-900 rounded-2xl p-6">
+    <p className="text-gray-400">Average Budget</p>
+    <h2 className="text-4xl font-bold text-green-400 mt-3">
+      ₹{dashboardStats.averageBudget.toLocaleString()}
+    </h2>
+  </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-        {filteredBusinesses.length === 0 ? (
-          <div className="col-span-full text-center text-gray-400">
-            No businesses found.
-          </div>
+  <div className="bg-slate-900 rounded-2xl p-6">
+    <p className="text-gray-400">Latest Business</p>
+    <h2 className="text-2xl font-bold text-cyan-400 mt-3">
+      {dashboardStats.latestBusiness}
+    </h2>
+  </div>
 
+</div>
+
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
+  {filteredBusinesses.length === 0 ? (
+    <div className="col-span-full text-center text-gray-400">
+      No businesses found.
+    </div>
         ) : (
           filteredBusinesses.map((business: Business) => (
             <BusinessCard
