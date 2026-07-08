@@ -71,7 +71,7 @@ function KPICards({
       {cards.map((card) => (
         <div
           key={card.title}
-          className="bg-slate-900 rounded-2xl p-6"
+          className="bg-white rounded-2xl p-6"
         >
           <p className="text-gray-400">
             {card.emoji} {card.title}

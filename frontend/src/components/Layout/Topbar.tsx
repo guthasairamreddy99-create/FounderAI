@@ -7,7 +7,7 @@ import {
 
 function Topbar() {
   return (
-    <header className="h-20 bg-slate-900 border-b border-slate-800 flex items-center justify-between px-8 sticky top-0 z-50">
+    <header className="h-20 bg-white border-b border-gray-200 flex items-center justify-between px-8 sticky top-0 z-50">
 
       {/* Search */}
       <div className="flex items-center gap-3 bg-slate-800 rounded-xl px-4 py-3 w-[400px]">
@@ -17,7 +17,7 @@ function Topbar() {
         <input
           type="text"
           placeholder="Search businesses..."
-          className="bg-transparent outline-none text-white flex-1"
+          className="bg-transparent outline-none text-gray-900 flex-1"
         />
 
       </div>

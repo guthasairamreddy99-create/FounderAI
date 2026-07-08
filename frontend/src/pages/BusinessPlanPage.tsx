@@ -6,12 +6,12 @@ import { toast } from "react-toastify";
 function BusinessPlanPage() {
   const [plan, setPlan] = useState("");
   const [loading, setLoading] = useState(false);
-
   const generatePlan = async (
     businessName: string,
     businessType: string,
     location: string,
-    budget: number
+    budget: number,
+    language: string
   ) => {
     setLoading(true);
     setPlan("");
@@ -29,9 +29,11 @@ function BusinessPlanPage() {
             businessType,
             location,
             budget,
+            language,
           }),
         }
       );
+
 
       const data = await response.json();
 

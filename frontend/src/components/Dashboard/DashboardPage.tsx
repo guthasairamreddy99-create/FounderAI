@@ -16,13 +16,15 @@ import {
 } from "../../api/businessApi";
 import BusinessStatusChart from "../Charts/BusinessStatusChart";
 import RevenueVsExpenseChart from "../Charts/RevenueVsExpenseChart";
-import RecentActivity from "./RecentActivity";
 import { toast } from "react-toastify";
 import RevenueTrend from "../Charts/RevenueTrend";
 import BusinessTable from "./BusinessTable";
 import { exportDashboard } from "../../utils/exportPDF";
 import { exportBusinessesToExcel } from "../../utils/exportExcel";
 import NotificationBell from "./NotificationBell";
+import QuickActions from "./QuickActions";
+import ActivityCard from "./ActivityCard";
+import WelcomeBanner from "./WelcomeBanner";
 
 function DashboardPage() {
   const [showWizard, setShowWizard] = useState(false);
@@ -37,24 +39,28 @@ function DashboardPage() {
   totalBusinessPlans: 0,
   totalBudget: 0,
   totalRevenue: 0,
+  totalCustomers: 0,
   totalExpenses: 0,
   totalProfit: 0,
   averageBudget: 0,
   latestBusiness: "",
 });
   const loadBusinesses = async () => {
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const data = await getBusinesses();
+    const businessData = await getBusinesses();
+    setBusinesses(businessData);
 
-      setBusinesses(data);
-    } catch (error) {
-      console.error("Failed to load businesses:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const dashboardData = await getDashboardStats();
+    setDashboardStats(dashboardData);
+
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     loadBusinesses();
@@ -182,6 +188,14 @@ const completed = businesses.filter(
         }}
       />
 
+     <WelcomeBanner
+  name="Sai"
+  businesses={dashboardStats.totalBusinesses}
+  reports={dashboardStats.totalBusinessPlans}
+/>
+
+      <QuickActions />
+
    <div className="flex items-center gap-4 my-8">
   
   <div className="flex justify-end mb-6">
@@ -219,10 +233,9 @@ const completed = businesses.filter(
   budget={dashboardStats.totalBudget}
   revenue={dashboardStats.totalRevenue}
   profit={dashboardStats.totalProfit}
-  customers={stats.totalCustomers}
+  customers={dashboardStats.totalCustomers}
   growth={stats.avgGrowth}
 />
-
   {/* Charts go here */}
 
   <div className="grid lg:grid-cols-2 gap-8 mt-10">
@@ -234,7 +247,7 @@ const completed = businesses.filter(
         32000,
         45000,
         60000,
-        stats.totalRevenue,
+        dashboardStats.totalRevenue,
       ]}
     />
 
@@ -245,7 +258,7 @@ const completed = businesses.filter(
         18000,
         25000,
         30000,
-        stats.totalBudget,
+        dashboardStats.totalBudget,
       ]}
     />
 
@@ -273,7 +286,7 @@ const completed = businesses.filter(
 </div>
 
   <div className="mt-10">
-    <RecentActivity />
+    <ActivityCard />
 </div>
 
   <BusinessTable businesses={filteredBusinesses} />
@@ -317,7 +330,7 @@ const completed = businesses.filter(
               status={business.status}
               location={business.location}
               budget={business.budget}
-              customer={business.customer}
+              customer={business.customers}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />

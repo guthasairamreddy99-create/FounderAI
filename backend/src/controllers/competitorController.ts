@@ -5,7 +5,7 @@ const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY!,
 });
 
-export const generatePitchDeck = async (
+export const generateCompetitorAnalysis = async (
   req: Request,
   res: Response
 ) => {
@@ -18,33 +18,35 @@ export const generatePitchDeck = async (
       language,
     } = req.body;
 
-   const prompt = `
+    const prompt = `
 You are an expert startup consultant.
 
-Generate the ENTIRE investor pitch deck in ${language}.
+Generate a detailed Competitor Analysis.
 
 Business Name: ${businessName}
 Business Type: ${businessType}
 Location: ${location}
 Budget: ₹${budget}
 
-IMPORTANT:
-- Write ONLY in ${language}.
-- Do not mix languages.
-- Use Markdown.
+Generate the ENTIRE response in ${language}.
 
-Generate exactly:
+Use ONLY ${language}.
 
-# Slide 1 - Title
-# Slide 2 - Problem
-# Slide 3 - Solution
-# Slide 4 - Market Opportunity
-# Slide 5 - Business Model
-# Slide 6 - Competitor Analysis
-# Slide 7 - Financial Plan
-# Slide 8 - Funding Requirement
-# Slide 9 - Roadmap
-# Slide 10 - Thank You
+Return Markdown.
+
+Include exactly:
+
+# Top Competitors
+
+# Competitor Strengths
+
+# Competitor Weaknesses
+
+# Competitive Advantages
+
+# Recommendations
+
+Give practical business advice.
 `;
 
     const response = await ai.models.generateContent({
@@ -54,7 +56,7 @@ Generate exactly:
 
     res.json({
       success: true,
-      pitchDeck: response.text,
+      analysis: response.text,
     });
 
   } catch (error) {
@@ -62,7 +64,7 @@ Generate exactly:
 
     res.status(500).json({
       success: false,
-      message: "Failed to generate pitch deck",
+      message: "Failed to generate competitor analysis",
     });
   }
 };

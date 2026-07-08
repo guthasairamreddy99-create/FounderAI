@@ -9,9 +9,12 @@ import {
   FaFilePdf,
   FaCog,
   FaFolderOpen,
+  FaRocket,
 } from "react-icons/fa";
 
 import { NavLink } from "react-router-dom";
+import { FaChartPie } from "react-icons/fa";
+import { FaTrophy } from "react-icons/fa";
 
 const menu = [
   {
@@ -50,6 +53,21 @@ const menu = [
     path: "/business-plan",
   },
   {
+  icon: <FaRocket/>,
+  label: "Pitch Deck",
+  path: "/pitch-deck",
+},
+{
+  icon: <FaChartPie />,
+  label: "SWOT Analysis",
+  path: "/swot",
+},
+{
+  icon: <FaTrophy />,
+  label: "Competitor Analysis",
+  path: "/competitor",
+},
+  {
     icon: <FaFilePdf />,
     label: "Reports",
     path: "/reports",
@@ -64,13 +82,23 @@ const menu = [
   label: "My Plans",
   path: "/my-plans",
 },
+{
+  icon: <FaBullhorn />,
+  label: "Marketing AI",
+  path: "/marketing-ai",
+},
+{
+  icon: <FaRobot />,
+  label: "AI Hub",
+  path: "/ai-hub",
+},
 ];
 
 function Sidebar() {
   return (
-    <aside className="w-72 min-h-screen bg-slate-950 border-r border-slate-800 flex flex-col">
+    <aside className="w-72 min-h-screen bg-white border-r border-gray-200 flex flex-col">
       <div className="p-6">
-        <h1 className="text-3xl font-bold text-white">
+        <h1 className="text-3xl font-bold text-gray-900">
           🚀 FounderAI
         </h1>
       </div>

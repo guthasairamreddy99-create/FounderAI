@@ -5,7 +5,8 @@ type Props = {
     businessName: string,
     businessType: string,
     location: string,
-    budget: number
+    budget: number,
+    language: string
   ) => void;
 };
 
@@ -14,6 +15,7 @@ function BusinessPlanForm({ onGenerate }: Props) {
   const [businessType, setBusinessType] = useState("");
   const [location, setLocation] = useState("");
   const [budget, setBudget] = useState(0);
+  const [language, setLanguage] = useState("English");
 
   return (
     <div className="bg-slate-900 rounded-2xl p-6 space-y-4">
@@ -51,13 +53,30 @@ function BusinessPlanForm({ onGenerate }: Props) {
         onChange={(e) => setBudget(Number(e.target.value))}
       />
 
+      <div>
+  <label className="block mb-2 font-semibold">
+    Language
+  </label>
+
+  <select
+    value={language}
+    onChange={(e) => setLanguage(e.target.value)}
+    className="w-full border rounded-xl p-3"
+  >
+    <option value="English">🇬🇧 English</option>
+    <option value="తెలుగు">🇮🇳 తెలుగు</option>
+    <option value="हिन्दी">🇮🇳 हिन्दी</option>
+  </select>
+</div>
+
       <button
         onClick={() =>
           onGenerate(
             businessName,
             businessType,
             location,
-            budget
+            budget,
+            language
           )
         }
         className="bg-indigo-600 hover:bg-indigo-700 px-6 py-3 rounded-xl"

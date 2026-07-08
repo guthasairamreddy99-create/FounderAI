@@ -6,7 +6,7 @@ type BusinessCardProps = {
   status: string;
   location?: string;
   budget?: number;
-  customer?: string;
+  customer?: number;
   onDelete: (id: string) => void;
   onEdit: (id: string) => void;
 };

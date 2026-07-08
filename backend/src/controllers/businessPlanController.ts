@@ -16,39 +16,36 @@ export const generateBusinessPlan = async (
       businessType,
       location,
       budget,
+      language,
     } = req.body;
 
     const prompt = `
 You are an expert startup consultant.
 
-Create a professional business plan.
+Generate the COMPLETE business plan in ${language}.
 
 Business Name: ${businessName}
 Business Type: ${businessType}
 Location: ${location}
 Budget: ₹${budget}
 
-Return the response in Markdown with these sections:
+IMPORTANT:
+- Write ONLY in ${language}.
+- Do not mix languages.
+- Use professional business terminology.
+- Return the result in Markdown.
+
+Include:
 
 # Executive Summary
-
 # Market Analysis
-
 # Target Customers
-
 # Competitor Analysis
-
 # Marketing Strategy
-
 # Operations Plan
-
 # Financial Plan
-
 # Risks
-
 # Growth Strategy
-
-Write detailed and practical advice.
 `;
 
     const response = await ai.models.generateContent({

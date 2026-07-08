@@ -37,8 +37,8 @@ function BusinessWizard({
     business?.budget?.toString() || ""
   );
 
-  const [customer, setCustomer] = useState(
-    business?.customer || ""
+  const [customers, setCustomers] = useState(
+    business?.customers?.toString() || ""
   );
 
   const handleFinish = async () => {
@@ -47,19 +47,18 @@ function BusinessWizard({
         name: businessName,
         location,
         budget: Number(budget),
-        customer,
+        customers: Number(customers),
         status: "Planning",
       };
 
       if (business?._id) {
         await updateBusiness(business._id, businessData);
 
-        
-        toast.success("Business Updated Successfully!");
+        toast.success("✅ Business updated successfully!");
       } else {
         await createBusiness(businessData);
 
-        toast.success("Business Created Successfully!");
+        toast.success("🎉 Business created successfully!");
       }
 
       onClose();
@@ -70,12 +69,64 @@ function BusinessWizard({
   };
 
   return (
-    <section className="py-24 px-8 bg-slate-950">
-      <div className="max-w-4xl mx-auto bg-slate-900 rounded-3xl border border-slate-800 p-10">
+    <section className="py-16 px-6 bg-slate-950 min-h-screen">
+      <div className="max-w-4xl mx-auto bg-slate-900 rounded-3xl border border-slate-800 shadow-2xl p-10">
 
+        {/* Header */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-white">
+            🚀 {business ? "Edit Business" : "Create Business"}
+          </h1>
+
+          <p className="text-gray-400 mt-3">
+            Complete all 5 steps to finish your business setup.
+          </p>
+
+          <p className="text-indigo-400 font-semibold mt-4">
+            Step {step} of 5
+          </p>
+        </div>
+
+        {/* Progress */}
         <ProgressBar step={step} />
 
-        <div className="mt-12">
+        {/* Step Title */}
+        <div className="mt-10 mb-8">
+
+          {step === 1 && (
+            <h2 className="text-2xl font-bold text-white">
+              🏢 Business Information
+            </h2>
+          )}
+
+          {step === 2 && (
+            <h2 className="text-2xl font-bold text-white">
+              📍 Business Location
+            </h2>
+          )}
+
+          {step === 3 && (
+            <h2 className="text-2xl font-bold text-white">
+              💰 Budget Details
+            </h2>
+          )}
+
+          {step === 4 && (
+            <h2 className="text-2xl font-bold text-white">
+              👥 Customer Information
+            </h2>
+          )}
+
+          {step === 5 && (
+            <h2 className="text-2xl font-bold text-white">
+              ✅ Review & Finish
+            </h2>
+          )}
+
+        </div>
+
+        {/* Steps */}
+        <div>
 
           {step === 1 && (
             <StepBusiness
@@ -100,8 +151,8 @@ function BusinessWizard({
 
           {step === 4 && (
             <StepCustomer
-              customer={customer}
-              setCustomer={setCustomer}
+              customer={customers}
+              setCustomer={setCustomers}
             />
           )}
 
@@ -110,17 +161,20 @@ function BusinessWizard({
               businessName={businessName}
               location={location}
               budget={budget}
-              customer={customer}
+              customer={customers}
             />
           )}
 
         </div>
 
-        <NavigationButtons
-          step={step}
-          setStep={setStep}
-          onFinish={handleFinish}
-        />
+        {/* Navigation */}
+        <div className="mt-10">
+          <NavigationButtons
+            step={step}
+            setStep={setStep}
+            onFinish={handleFinish}
+          />
+        </div>
 
       </div>
     </section>

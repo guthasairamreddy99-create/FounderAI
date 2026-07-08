@@ -6,7 +6,6 @@ import BusinessDetailsPage from "./components/BusinessDetails/BusinessDetailsPag
 import BusinessPage from "./components/Pages/BusinessPage";
 import FinancialPage from "./components/Pages/FinancialPage";
 import CustomersPage from "./components/Pages/CustomersPage";
-import MarketingPage from "./components/Pages/MarketingPage";
 import AIMentorPage from "./components/Pages/AIMentorPage";
 import ReportsPage from "./components/Pages/ReportsPage";
 import SettingsPage from "./components/Pages/SettingsPage";
@@ -17,6 +16,11 @@ import ProtectedRoute from "./components/Auth/ProtectedRoute";
 import BusinessPlanPage from "./pages/BusinessPlanPage";
 import MyBusinessPlansPage from "./pages/MyBusinessPlansPage";
 import ViewBusinessPlanPage from "./pages/ViewBusinessPlanPage";
+import PitchDeckPage from "./pages/PitchDeckPage";
+import SWOTPage from "./pages/SWOTPage";
+import CompetitorPage from "./pages/CompetitorPage";
+import MarketingPage from "./pages/MarketingPage";
+import AIHubPage from "./pages/AIHubPage";
 
 function App() {
   return (
@@ -49,6 +53,17 @@ function App() {
 />
 
 <Route
+  path="/pitch-deck"
+  element={<PitchDeckPage />}
+
+/>
+
+<Route
+  path="/ai-hub"
+  element={<ProtectedRoute><AIHubPage /></ProtectedRoute>}
+/>
+
+<Route
   path="/my-plans"
   element={<MyBusinessPlansPage />}
 />
@@ -57,6 +72,22 @@ function App() {
   path="/my-plans/:id"
   element={<ViewBusinessPlanPage />}
 />
+
+<Route
+  path="/marketing-ai"
+  element={<MarketingPage />}
+/>
+
+<Route
+  path="/swot"
+  element={<SWOTPage />}
+/>
+
+<Route
+  path="/competitor"
+  element={<CompetitorPage />}
+/>
+
       {/* Unknown Routes */}
       <Route path="*" element={<Navigate to="/" replace />} />
 

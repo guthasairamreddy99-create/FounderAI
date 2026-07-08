@@ -15,6 +15,9 @@ import authRoutes from "./routes/authRoutes";
 import businessPlanRoutes from "./routes/businessPlanRoutes";
 import dashboardRoutes from "./routes/dashboardRoutes";
 import pitchDeckRoutes from "./routes/pitchDeckRoutes";
+import swotRoutes from "./routes/swotRoutes";
+import competitorRoutes from "./routes/competitorRoutes";
+import marketingRoutes from "./routes/marketingRoutes";
 
 const app = express();
 
@@ -32,6 +35,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/business-plan", businessPlanRoutes);
 app.use("/api/pitch-deck", pitchDeckRoutes);
+app.use("/api/swot", swotRoutes);
+app.use("/api/competitor", competitorRoutes);
+app.use("/api/marketing", marketingRoutes);
 app.get("/", (req, res) => {
   res.json({
     success: true,

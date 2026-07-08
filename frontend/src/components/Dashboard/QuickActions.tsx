@@ -1,54 +1,81 @@
+import { Link } from "react-router-dom";
 import {
-  FaChartBar,
-  FaFilePdf,
-  FaRobot,
+  FaPlus,
+  FaFileAlt,
+  FaRocket,
+  FaChartPie,
+  FaTrophy,
   FaBullhorn,
+  FaRobot,
 } from "react-icons/fa";
 
 const actions = [
   {
-    title: "Analyze Budget",
-    icon: <FaChartBar />,
+    title: "New Business",
+    icon: <FaPlus size={28} />,
     color: "bg-blue-600",
+    link: "/business",
   },
   {
-    title: "Export PDF",
-    icon: <FaFilePdf />,
+    title: "Business Plan",
+    icon: <FaFileAlt size={28} />,
     color: "bg-green-600",
+    link: "/business-plan",
   },
   {
-    title: "AI Mentor",
-    icon: <FaRobot />,
+    title: "Pitch Deck",
+    icon: <FaRocket size={28} />,
     color: "bg-purple-600",
+    link: "/pitch-deck",
   },
   {
-    title: "Marketing AI",
-    icon: <FaBullhorn />,
+    title: "SWOT",
+    icon: <FaChartPie size={28} />,
     color: "bg-orange-600",
+    link: "/swot",
+  },
+  {
+    title: "Competitor",
+    icon: <FaTrophy size={28} />,
+    color: "bg-yellow-600",
+    link: "/competitor",
+  },
+  {
+    title: "Marketing",
+    icon: <FaBullhorn size={28} />,
+    color: "bg-pink-600",
+    link: "/marketing-ai",
+  },
+  {
+    title: "AI Hub",
+    icon: <FaRobot size={28} />,
+    color: "bg-indigo-600",
+    link: "/ai-hub",
   },
 ];
 
 function QuickActions() {
   return (
-    <div className="bg-slate-900 rounded-2xl p-6 border border-slate-800">
-      <h2 className="text-2xl font-bold text-white mb-6">
+    <div className="mt-8">
+      <h2 className="text-2xl font-bold mb-6">
         ⚡ Quick Actions
       </h2>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-5">
         {actions.map((action) => (
-          <button
+          <Link
             key={action.title}
-            className={`${action.color} rounded-xl p-6 hover:scale-105 transition`}
+            to={action.link}
+            className={`${action.color} rounded-2xl p-6 text-white text-center hover:scale-105 transition-transform shadow-lg`}
           >
-            <div className="text-3xl mb-3 text-white">
+            <div className="flex justify-center mb-4">
               {action.icon}
             </div>
 
-            <p className="text-white font-semibold">
+            <p className="font-semibold">
               {action.title}
             </p>
-          </button>
+          </Link>
         ))}
       </div>
     </div>

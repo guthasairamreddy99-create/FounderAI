@@ -1,7 +1,15 @@
-const API = "http://localhost:5000/api/business";
-const AI_API = "http://localhost:5000/api/ai/business-advice";
-const ANALYSIS_API = "http://localhost:5000/api/analysis";
-const FORECAST_API = "http://localhost:5000/api/forecast";
+const BASE_URL = import.meta.env.VITE_API_URL;
+
+const API = `${BASE_URL}/api/business`;
+const AI_API = `${BASE_URL}/api/ai/business-advice`;
+const ANALYSIS_API = `${BASE_URL}/api/analysis`;
+const FORECAST_API = `${BASE_URL}/api/forecast`;
+const BUSINESS_PLAN_API = `${BASE_URL}/api/business-plan`;
+const DASHBOARD_API = `${BASE_URL}/api/dashboard`;
+const PITCH_DECK_API = `${BASE_URL}/api/pitch-deck`;
+const SWOT_API = `${BASE_URL}/api/swot`;
+const COMPETITOR_API = `${BASE_URL}/api/competitor`;
+const MARKETING_API = `${BASE_URL}/api/marketing`;
 const getHeaders = () => ({
   "Content-Type": "application/json",
   Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -27,7 +35,7 @@ export async function createBusiness(business: {
   name: string;
   location: string;
   budget: number;
-  customer: string;
+  customers: number;
   status: string;
 }) {
   const response = await fetch(API, {
@@ -50,7 +58,7 @@ export async function updateBusiness(
     name: string;
     location: string;
     budget: number;
-    customer: string;
+    customers: number;
     status: string;
   }
 ) {
@@ -188,9 +196,7 @@ export async function getForecast(
 // ============================
 
 export async function getBusinessPlans() {
-  const response = await fetch(
-    "http://localhost:5000/api/business-plan"
-  );
+  const response = await fetch(BUSINESS_PLAN_API);
 
   if (!response.ok) {
     throw new Error("Failed to fetch business plans");
@@ -202,12 +208,7 @@ export async function getBusinessPlans() {
 }
 
 export async function deleteBusinessPlan(id: string) {
-  const response = await fetch(
-    `http://localhost:5000/api/business-plan/${id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  const response = await fetch(`${BUSINESS_PLAN_API}/${id}`);
 
   if (!response.ok) {
     throw new Error("Failed to delete business plan");
@@ -221,9 +222,7 @@ export async function deleteBusinessPlan(id: string) {
 // ============================
 
 export async function getDashboardStats() {
-  const response = await fetch(
-    "http://localhost:5000/api/dashboard"
-  );
+  const response =await fetch(DASHBOARD_API);
 
   if (!response.ok) {
     throw new Error("Failed to load dashboard");
@@ -232,4 +231,99 @@ export async function getDashboardStats() {
   const data = await response.json();
 
   return data.data;
+}
+
+// ===============================
+// AI Pitch Deck
+// ===============================
+
+export async function generatePitchDeck(data: {
+  businessName: string;
+  businessType: string;
+  location: string;
+  budget: number;
+  language: string;
+}) {
+  const response = await fetch(PITCH_DECK_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to generate pitch deck");
+  }
+
+  return response.json();
+}
+
+export async function generateSWOT(data: {
+  businessName: string;
+  businessType: string;
+  location: string;
+  budget: number;
+  language: string;
+}) {
+  const response = await fetch(SWOT_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to generate SWOT");
+  }
+
+  return response.json();
+}
+
+export async function generateCompetitorAnalysis(data: {
+  businessName: string;
+  businessType: string;
+  location: string;
+  budget: number;
+  language: string;
+}) {
+  const response = await fetch(COMPETITOR_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to generate competitor analysis");
+  }
+
+  return response.json();
+}
+
+export async function generateMarketing(data: {
+  businessName: string;
+  businessType: string;
+  targetAudience: string;
+  festival: string;
+  language: string;
+}) {
+  const response = await fetch(MARKETING_API, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to generate marketing campaign");
+  }
+
+  return response.json();
 }
