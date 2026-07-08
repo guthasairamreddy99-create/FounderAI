@@ -18,8 +18,8 @@ function BusinessPlanPage() {
 
     try {
       const response = await fetch(
-        "http://localhost:5000/api/business-plan",
-        {
+        "https://founderai-opgp.onrender.com/api/business-plan",
+    {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -80,5 +80,6 @@ function BusinessPlanPage() {
     </div>
   );
 }
+
 
 export default BusinessPlanPage;

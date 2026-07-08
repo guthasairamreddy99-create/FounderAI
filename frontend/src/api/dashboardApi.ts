@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api/dashboard";
+const API ="https://founderai-opgp.onrender.com/api/dashboard";
 
 export async function getDashboardStats() {
   const response = await fetch(API);
